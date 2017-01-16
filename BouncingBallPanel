@@ -1,0 +1,80 @@
+package bouncingball;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.security.SecureRandom;
+
+import javax.swing.JPanel;
+
+public class BouncingBallPanel extends JPanel implements MouseListener{
+
+	private static int ballCount;
+	private static Ball[] ball;
+	private static Thread[] t;
+	
+	BouncingBallPanel()//constructor
+	{
+		ball = new Ball[20];
+		ballCount = 0;
+		t = new Thread[20];
+	}
+	
+	
+	
+	
+	@Override
+	protected synchronized void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		for(int x = 0; x < ballCount; x++)//prints all the balls saved in the array
+			{
+				ball[x].paint(g);
+				ball[x].run();
+			}
+	
+	} 
+
+
+	@Override
+	public void mouseClicked(MouseEvent event) {//when mouse is clicked, add a new ball at the point of click and release
+		
+		if(ballCount < 20)//makes sure that more than 20 balls do not enter into the screen
+		{
+			ball[ballCount] = new Ball(this);
+			ball[ballCount].setRandomBall();
+			ball[ballCount].setLocation(event.getX(), event.getY());
+			repaint();
+			//t[ballCount] = new Thread(ball[ballCount]);
+			//t[ballCount].start();
+			ballCount++;
+		}
+		else//error message if more than 20 clicks
+		{
+			System.out.println("Error, maximum balls allowed is 20");
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent event) {
+		// empty method, do not need
+	}
+
+	@Override
+	public void mouseExited(MouseEvent event) {
+		// empty method, do not need
+	}
+
+	@Override
+	public void mousePressed(MouseEvent event) {
+		// empty method, do not need
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent event) {
+		// empty method, do not need
+	}
+
+	
+}
