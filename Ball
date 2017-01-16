@@ -1,0 +1,157 @@
+package bouncingball;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.security.SecureRandom;
+
+import javax.swing.JComponent;
+
+public class Ball implements Runnable{
+
+	private int x, y;
+	double diameter; 
+	private int deltax, deltay;
+	private Color color;
+	private BouncingBallPanel bouncingBallPanel;
+	private int speed;
+	
+	
+	Ball(BouncingBallPanel bouncingBallPanel)//constructor that accepts the panel for a bouncing ball
+	{
+		this.bouncingBallPanel = bouncingBallPanel;
+	}
+	
+	//setter methods 
+	void setLocation(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+	void setDelta(int deltax, int deltay)
+	{
+		this.deltax = deltax;
+		this.deltay = deltay;
+	}
+	void setDiameter(double diameter)
+	{
+		this.diameter = diameter;
+	}
+	void setColor(Color color)
+	{
+		this.color = color;
+	}
+	void setSpeed(int speed)
+	{
+		this.speed = speed;
+	}
+	
+	void changeDeltaX()//changes direction of x movement
+	{
+		deltax = -deltax;
+	}
+	void changeDeltaY()//changes direction of y movement
+	{
+		deltay =-deltay;
+	}
+	
+	//getter methods
+	int getDeltaX()
+	{
+		return deltax;
+	}
+	int getDeltaY()
+	{
+		return deltay;
+	}
+	double getX()
+	{
+		return x;
+	}
+	double getY()
+	{
+		return y;
+	}
+	double getDiameter()
+	{
+		return diameter;
+	}
+	int getSpeed()
+	{
+		return speed;
+	}
+	
+	
+	void setRandomBall()//will set the ball at a random location, with a random color and speed
+	{
+		
+		SecureRandom random = new SecureRandom();
+		color = new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+		diameter= 10+random.nextInt(90);//set the diameter of the circle between 10 and 100
+		
+		do//make sure the movement location is not zero so that it is not at a standpoint
+			deltax = random.nextInt(10)-5;
+		while(deltax == 0);
+		do
+			deltay = random.nextInt(10)-5;
+		while(deltay ==0);
+		speed = random.nextInt(100);
+	
+	}
+	
+	
+	public void paint(Graphics g)//paints the ball onto the screen
+	{
+			g.setColor(color);
+			g.fillOval((int)x, (int)y, (int)diameter, (int)diameter);
+	}
+	
+	void move()//moves the ball 
+	{
+		if(x >= (bouncingBallPanel.getWidth()- diameter))
+		{
+			changeDeltaX();
+			x = (int) (bouncingBallPanel.getWidth()-diameter);
+		}
+		else if(x <= 0)
+		{
+			changeDeltaX();
+			x = 0;
+		}
+		if(y >= (bouncingBallPanel.getHeight()- diameter))
+		{
+			changeDeltaY();
+			y = (int) (bouncingBallPanel.getHeight()-diameter);
+		}
+		else if(y<=0)
+		{
+			changeDeltaY();
+			y =0;
+		}
+		
+		x+= deltax;
+		y+= deltay;
+		
+	}
+	
+
+	
+	public void run() 
+	{ 
+		
+				
+				try
+				{
+						Thread.sleep(speed);//delays thread 
+						bouncingBallPanel.repaint();//reprints the screen with new ball location
+						move();
+						
+				}
+				catch (InterruptedException exeption)
+				{
+					exeption.printStackTrace();
+					Thread.currentThread().interrupt();
+				}
+				
+		
+	}
+}
