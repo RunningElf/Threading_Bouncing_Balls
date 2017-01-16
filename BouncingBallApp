@@ -1,0 +1,44 @@
+package bouncingball;
+import java.awt.Color;
+import javax.swing.JFrame;
+
+
+/*
+ * BouncingBallApp
+High level description:
+The application creates a maximum of 20 balls of random color
+and displays the balls moving within a window. 
+The rate of movement can be controlled by modifying the delay time in the run() method.
+
+main():
+1. Create BouncingBallAp instance
+2. Set the approprate Window Closing features (1.e., close Window when "X" is clicked)
+3. Create a "BouncingBallPanel" (BBP_ instance and add to container
+4. Make the BBP the "MouseListener" object(i.e., handle Mouse Click event)
+5. Set Window Size
+6. Make Window Visible
+
+Course Number & Section: CIS5200
+Assignment Designation: Project 8
+Name: Nikkita Hirayama
+
+ */
+public class BouncingBallApp extends JFrame{
+
+	public static void main(String[] args) {
+		
+		JFrame frame = new JFrame("Using colors");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        BouncingBallPanel panel = new BouncingBallPanel();
+        frame.add(panel);//adds panel to frame
+        frame.setSize(600, 600);//sets size 
+        panel.setBackground(Color.yellow);//background color
+        panel.addMouseListener(panel);
+        frame.setVisible(true);
+        frame.setResizable(false);//makes it non resizable
+
+	}
+
+}
+
